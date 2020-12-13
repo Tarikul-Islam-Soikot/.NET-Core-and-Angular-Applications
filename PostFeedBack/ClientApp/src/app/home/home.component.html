@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="form-group mt-2 col-md-12">
+
+    <button class="btn btn-sm btn-primary" style="float: right" (click)="search();"><i class="fa fa-search"></i> Search Posts </button>
+  </div>
+</div>
+<div class="row">
+
+  <kendo-grid [data]="gridView"
+              [selectable]="selectableSettings"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [pageable]="true"
+              (pageChange)="pageChange($event)"
+              [kendoGridSelectBy]="'PKID'"
+              style="margin: 14px">
+
+    <kendo-grid-column field="postName" title="Post Title" width="100"></kendo-grid-column>
+    <kendo-grid-column field="postCreatorName" title="Post Creator Name" width="100"></kendo-grid-column>
+    <kendo-grid-column title="Post Creation Date" width="80">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{dataItem.postCreationDate | date: 'dd MMM yyyy'}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="numOfComments" title="Number Of Comment" width="100"></kendo-grid-column>
+
+    <ng-template kendoGridDetailTemplate let-dataItem>
+
+      <kendo-grid style="margin: 0px"
+                  [data]="dataItem.comments"
+                  [resizable]="true">
+
+        <kendo-grid-column field="commentDescription" title="Comment" width="100"></kendo-grid-column>
+        <kendo-grid-column field="commentCreatorName" title="Comment Creator Name" width="100"></kendo-grid-column>
+        <kendo-grid-column title="Comment Creation Date" width="80">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{dataItem.commentCreationDate | date: 'dd MMM yyyy'}}
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column title="Like & Dislike" width="80">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            Like: {{dataItem.numOfLike}}  Dislike: {{dataItem.numOfDislike}}
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
+    </ng-template>
+
+  </kendo-grid>
+
+</div>
