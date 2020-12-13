@@ -1,21 +1,10 @@
-//import { Component } from '@angular/core';
-
-//@Component({
-//  selector: 'app-home',
-//  templateUrl: './home.component.html',
-//})
-//export class HomeComponent {
-//}
-
-
-import { Component, OnInit, TemplateRef, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, NgForm, FormControl } from '@angular/forms';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { RowArgs, GridDataResult, PageChangeEvent, SelectableSettings } from '@progress/kendo-angular-grid';
-import { PostDto, CommentsDto } from './Response'
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { PostDto } from './Response'
+import { Subscription } from 'rxjs';
 import { ApiService } from '../app.api.service';
 import { NotificationService } from '../app.notification.service';
 
@@ -33,16 +22,10 @@ export class HomeComponent implements OnInit {
   public pageSize = 10;
   public skip = 0;
 
-  public dataList: PostDto[];
-  selectableSettings: SelectableSettings;
+  public postList: PostDto[];
 
-  constructor(public router: Router,
-    public apiService: ApiService,
-    public notificationService: NotificationService,
-    public modalService: BsModalService,
-    public route: ActivatedRoute,
-    public formBuilder: FormBuilder,
-    http: HttpClient) {
+  constructor(public apiService: ApiService,
+    public notificationService: NotificationService) {
 
   }
 
@@ -50,34 +33,26 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public setSelectableSettings(): void {
-    this.selectableSettings = {
-      checkboxOnly: true,
-      mode: 'single'
-    };
-  }
-
-
   public search(): void {
 
     this.subscribers.getAllPost
       = this.apiService.httpGet<PostDto[]>('Post/GetAllPost')
         .subscribe(
-          (x) => { this.dataList = x; },
+          (x) => { this.postList = x; },
           (error) => {
             this.notificationService.showError(error);
             console.log(error);
           },
           () => {
-            if (this.dataList !== null && this.dataList !== undefined)
+            if (this.postList !== null && this.postList !== undefined)
               this.loadGrid();
           });
   }
 
   public loadGrid(): void {
     this.gridView = {
-      data: this.dataList.slice(this.skip, this.skip + this.pageSize),
-      total: this.dataList.length
+      data: this.postList.slice(this.skip, this.skip + this.pageSize),
+      total: this.postList.length
     };
   }
 

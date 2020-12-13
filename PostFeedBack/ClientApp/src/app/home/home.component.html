@@ -7,12 +7,10 @@
 <div class="row">
 
   <kendo-grid [data]="gridView"
-              [selectable]="selectableSettings"
               [pageSize]="pageSize"
               [skip]="skip"
               [pageable]="true"
               (pageChange)="pageChange($event)"
-              [kendoGridSelectBy]="'PKID'"
               style="margin: 14px">
 
     <kendo-grid-column field="postName" title="Post Title" width="100"></kendo-grid-column>
