@@ -1,0 +1,3 @@
+@echo off
+powershell -command "$shell = New-Object -ComObject Shell.Application; $window = $shell.Windows() | Where-Object {$_.LocationURL -eq 'file:///C:/Local/Test%20Projects/test'}; if($window) {$window.Document.Application.Minimize()}"
+start /min "" python main.py
